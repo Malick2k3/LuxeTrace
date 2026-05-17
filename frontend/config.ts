@@ -1,0 +1,27 @@
+const DEFAULT_CONTRACT_ADDRESS =
+  "0x91Eb73e5F534E0A7233aCa45Cec916698A8E894E";
+
+const DEFAULT_RPC_URL =
+  "https://eth-sepolia.g.alchemy.com/v2/uNm5eqtsZtbKAO0REfsiD";
+
+const DEFAULT_CHAIN_ID = "11155111";
+
+const DEFAULT_NETWORK_NAME = "Sepolia";
+
+export const CONTRACT_ADDRESS =
+  process.env.NEXT_PUBLIC_LUXETRACE_ADDRESS ?? DEFAULT_CONTRACT_ADDRESS;
+
+export const READONLY_RPC_URL =
+  process.env.NEXT_PUBLIC_RPC_URL ?? DEFAULT_RPC_URL;
+
+export const REQUIRED_CHAIN_ID = Number(
+  process.env.NEXT_PUBLIC_CHAIN_ID ?? DEFAULT_CHAIN_ID
+);
+
+export const REQUIRED_CHAIN_ID_HEX = `0x${REQUIRED_CHAIN_ID.toString(16)}`;
+
+export const REQUIRED_NETWORK_NAME =
+  process.env.NEXT_PUBLIC_NETWORK_NAME ?? DEFAULT_NETWORK_NAME;
+
+export const REQUIRED_NETWORK_RPC_URL =
+  process.env.NEXT_PUBLIC_NETWORK_RPC_URL ?? READONLY_RPC_URL;

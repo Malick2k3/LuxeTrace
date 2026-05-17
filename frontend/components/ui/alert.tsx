@@ -1,0 +1,56 @@
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+const alertVariants = cva("relative w-full rounded-[24px] border p-4 text-sm shadow-sm", {
+  variants: {
+    variant: {
+      default: "border-white/80 bg-white/78 text-foreground backdrop-blur-xl",
+      success:
+        "border-emerald-200 bg-emerald-50/95 text-emerald-900 backdrop-blur-xl",
+      warning:
+        "border-amber-200 bg-amber-50/95 text-amber-900 backdrop-blur-xl",
+      destructive:
+        "border-red-200 bg-red-50/95 text-red-900 backdrop-blur-xl"
+    }
+  },
+  defaultVariants: {
+    variant: "default"
+  }
+});
+
+export const Alert = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
+>(({ className, variant, ...props }, ref) => (
+  <div
+    ref={ref}
+    role="alert"
+    className={cn(alertVariants({ variant }), className)}
+    {...props}
+  />
+));
+
+Alert.displayName = "Alert";
+
+export const AlertTitle = React.forwardRef<
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h5
+    ref={ref}
+    className={cn("mb-1.5 font-semibold leading-none tracking-normal", className)}
+    {...props}
+  />
+));
+
+AlertTitle.displayName = "AlertTitle";
+
+export const AlertDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("text-sm leading-6", className)} {...props} />
+));
+
+AlertDescription.displayName = "AlertDescription";

@@ -1,0 +1,19 @@
+{
+  "name": "luxetrace-contracts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "hardhat compile",
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.ts --network sepolia",
+    "node": "hardhat node",
+    "set-role:sepolia": "hardhat run scripts/set-role.ts --network sepolia",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.19",
+    "typescript": "^5.6.3"
+  }
+}
