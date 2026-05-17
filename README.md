@@ -204,3 +204,5 @@ Why this is more than a simple authenticity checker:
 See:
 
 - `SEPOLIA_SETUP.md`
+
+Last updated for the live GitHub and Vercel deployment flow.
