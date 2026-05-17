@@ -149,18 +149,6 @@ npm.cmd run dev
 
 Open `http://localhost:3000`.
 
-## Demo Flow
-
-Use one sample item such as `LT-QA-001`.
-
-1. `Brand Team` issues the passport and sets `Customer 1` as the first owner.
-2. `Care Team` adds a service event without changing ownership.
-3. `Customer 1` checks the item and confirms they are the owner.
-4. `Customer 1` sends the passport to `Customer 2` when the item is resold.
-5. `Customer 2` checks the same item and sees that they are now the owner.
-
-That demo shows the full lifecycle, not just a yes/no authenticity check.
-
 ## Testing
 
 Run contract tests:
@@ -185,24 +173,3 @@ The tests cover:
 - the app is not a marketplace and does not process payments
 - service does not change ownership
 
-## Teacher-Facing Explanation
-
-Why blockchain fits this project:
-
-> The blockchain acts like a tamper-resistant passport registry. It stores the trust-critical lifecycle of the item instead of asking users to trust a private spreadsheet.
-
-Why not all data is on-chain:
-
-> On-chain data should stay small and important, like passport status, ownership, and service history. Large files such as images, invoices, and repair documents can stay off-chain if needed.
-
-Why this is more than a simple authenticity checker:
-
-> The project covers the full lifecycle of an item passport: issuance, customer-to-customer transfer, customer lookup, and authorized service history.
-
-## Sepolia Setup
-
-See:
-
-- `SEPOLIA_SETUP.md`
-
-Last updated for the live GitHub and Vercel deployment flow.
