@@ -172,4 +172,3 @@ The tests cover:
 - the transfer page uses a recipient picker so owners do not need to remember full account strings
 - the app is not a marketplace and does not process payments
 - service does not change ownership
-
