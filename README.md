@@ -75,7 +75,7 @@ Simple analogy:
 
 Current Sepolia deployment:
 
-- `0x91Eb73e5F534E0A7233aCa45Cec916698A8E894E`
+- `0x39c2e573B41Ef56c91AC1BDf0420FDc3CeA23b96`
 
 ## Stack
 
@@ -149,6 +149,28 @@ npm.cmd run dev
 
 Open `http://localhost:3000`.
 
+## Demo Flow
+
+Use one sample item such as `LT-QA-001`.
+
+1. `Brand Team` issues the passport and sets `Customer 1` as the first owner.
+2. `Care Team` adds a service event without changing ownership.
+3. `Customer 1` checks the item and confirms they are the owner.
+4. `Customer 1` sends the passport to `Customer 2` when the item is resold.
+5. `Customer 2` checks the same item and sees that they are now the owner.
+
+That demo shows the full lifecycle, not just a yes/no authenticity check.
+
+## Public Demo Access
+
+The live Sepolia deployment also supports a sandbox page for independent testing:
+
+- open `/demo`
+- connect a wallet on Sepolia
+- claim `Brand` or `Care` demo access with your own wallet
+- or stay as a customer in read-only mode
+
+This makes the app testable without using the project team's preconfigured wallets.
 ## Testing
 
 Run contract tests:

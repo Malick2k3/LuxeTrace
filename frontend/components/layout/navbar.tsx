@@ -19,6 +19,7 @@ export function Navbar() {
     hasStaffRole,
     isConnected,
     isResolvingAccess,
+    publicDemoMode,
     roleSummary,
     staffActions,
     primaryRoute,
@@ -35,6 +36,8 @@ export function Navbar() {
     hasStaffRole && !isResolvingAccess
       ? customerNavigationItems.filter((item) => item.href !== "/")
       : customerNavigationItems
+  ).concat(
+    publicDemoMode ? [{ href: "/demo", label: "Public Demo" }] : []
   ).concat(
     isConnected && !isResolvingAccess && hasOwnedPassports
       ? [{ href: ownerTransferHref, label: "Send Passport" }]

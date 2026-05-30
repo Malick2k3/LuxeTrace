@@ -8,14 +8,14 @@ describe("LuxeTracePassport", function () {
   const metadataURI = "ipfs://luxetrace/watch-001";
   const serialHash = ethers.id("SERIAL-001");
 
-  async function deployFixture() {
+  async function deployFixture(enablePublicDemoMode = false) {
     const [admin, issuer, reseller, buyer, serviceCenter] =
       await ethers.getSigners();
 
     const LuxeTracePassport = await ethers.getContractFactory(
       "LuxeTracePassport"
     );
-    const contract = await LuxeTracePassport.deploy();
+    const contract = await LuxeTracePassport.deploy(enablePublicDemoMode);
     await contract.waitForDeployment();
 
     await contract.setIssuer(issuer.address, true);
@@ -181,5 +181,36 @@ describe("LuxeTracePassport", function () {
     await expect(contract.getServiceHistory("UNKNOWN")).to.be.revertedWith(
       "Passport does not exist"
     );
+  });
+
+  it("lets any wallet claim sandbox roles when public demo mode is enabled", async function () {
+    const { contract, buyer } = await deployFixture(true);
+
+    expect(await contract.isPublicDemoMode()).to.equal(true);
+    expect(await contract.isIssuer(buyer.address)).to.equal(false);
+    expect(await contract.isServiceCenter(buyer.address)).to.equal(false);
+
+    await expect(contract.connect(buyer).claimDemoIssuerRole())
+      .to.emit(contract, "RoleUpdated")
+      .withArgs("ISSUER", buyer.address, true);
+
+    await expect(contract.connect(buyer).claimDemoServiceCenterRole())
+      .to.emit(contract, "RoleUpdated")
+      .withArgs("SERVICE_CENTER", buyer.address, true);
+
+    expect(await contract.isIssuer(buyer.address)).to.equal(true);
+    expect(await contract.isServiceCenter(buyer.address)).to.equal(true);
+  });
+
+  it("blocks sandbox role claims when public demo mode is disabled", async function () {
+    const { contract, buyer } = await deployFixture(false);
+
+    await expect(
+      contract.connect(buyer).claimDemoIssuerRole()
+    ).to.be.revertedWith("Public demo mode is disabled");
+
+    await expect(
+      contract.connect(buyer).claimDemoServiceCenterRole()
+    ).to.be.revertedWith("Public demo mode is disabled");
   });
 });

@@ -3,16 +3,18 @@ import { ethers, network } from "hardhat";
 async function main() {
   const [admin, issuer, , serviceCenter, buyer] =
     await ethers.getSigners();
+  const publicDemoMode = process.env.PUBLIC_DEMO_MODE === "true";
   const LuxeTracePassport = await ethers.getContractFactory(
     "LuxeTracePassport"
   );
-  const luxeTracePassport = await LuxeTracePassport.deploy();
+  const luxeTracePassport = await LuxeTracePassport.deploy(publicDemoMode);
 
   await luxeTracePassport.waitForDeployment();
 
   const address = await luxeTracePassport.getAddress();
 
   console.log(`LuxeTracePassport deployed to: ${address}`);
+  console.log(`Public demo mode: ${publicDemoMode ? "enabled" : "disabled"}`);
 
   if (network.name === "localhost" || network.name === "hardhat") {
     await luxeTracePassport.setIssuer(issuer.address, true);

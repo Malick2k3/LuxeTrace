@@ -18,6 +18,9 @@ export interface PendingTransaction {
 }
 
 export interface LuxeTraceContract {
+  isPublicDemoMode: () => Promise<boolean>;
+  claimDemoIssuerRole: () => Promise<PendingTransaction>;
+  claimDemoServiceCenterRole: () => Promise<PendingTransaction>;
   issuePassport: (
     itemCode: string,
     itemName: string,

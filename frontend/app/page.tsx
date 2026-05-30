@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, CheckCircle2, Search, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, Search, ShieldCheck, Users } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { useStaffAccess } from "@/hooks/use-staff-access";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,7 @@ export default function HomePage() {
     isConnected,
     isCorrectNetwork,
     isLoadingAccess,
+    publicDemoMode,
     primaryRoute
   } = useStaffAccess();
 
@@ -97,6 +98,14 @@ export default function HomePage() {
               <Button asChild size="lg" variant="outline">
                 <Link href="/history">See history</Link>
               </Button>
+              {publicDemoMode ? (
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/demo">
+                    Open public demo
+                    <Users className="h-4 w-4" />
+                  </Link>
+                </Button>
+              ) : null}
             </div>
           </div>
 

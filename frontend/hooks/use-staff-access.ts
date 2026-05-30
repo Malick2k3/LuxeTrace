@@ -44,13 +44,53 @@ const primaryRouteByRole: Record<StaffPrimaryRole, string> = {
 
 function useStaffAccessState() {
   const wallet = useWallet();
-  const { getRoleState, getOwnedItemCodes } = useLuxeTrace();
+  const { getPublicDemoMode, getRoleState, getOwnedItemCodes } = useLuxeTrace();
   const [roles, setRoles] = useState<ViewerRoles>(emptyRoles);
   const [isLoadingRoles, setIsLoadingRoles] = useState(false);
   const [ownedItemCodes, setOwnedItemCodes] = useState<string[]>([]);
   const [isLoadingOwnedItems, setIsLoadingOwnedItems] = useState(false);
+  const [publicDemoMode, setPublicDemoMode] = useState(false);
+  const [isLoadingDemoMode, setIsLoadingDemoMode] = useState(false);
   const [isResolvingAccess, setIsResolvingAccess] = useState(false);
   const resolutionIdRef = useRef(0);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refreshAccess = () => {
+    setRefreshKey((currentValue) => currentValue + 1);
+  };
+
+  useEffect(() => {
+    let isActive = true;
+
+    setIsLoadingDemoMode(true);
+
+    void getPublicDemoMode()
+      .then((value) => {
+        if (!isActive) {
+          return;
+        }
+
+        setPublicDemoMode(value);
+      })
+      .catch(() => {
+        if (!isActive) {
+          return;
+        }
+
+        setPublicDemoMode(false);
+      })
+      .finally(() => {
+        if (!isActive) {
+          return;
+        }
+
+        setIsLoadingDemoMode(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [getPublicDemoMode]);
 
   useEffect(() => {
     if (!wallet.account) {
@@ -92,7 +132,7 @@ function useStaffAccessState() {
       setIsLoadingOwnedItems(false);
       setIsResolvingAccess(false);
     });
-  }, [getOwnedItemCodes, getRoleState, wallet.account]);
+  }, [getOwnedItemCodes, getRoleState, refreshKey, wallet.account]);
 
   const hasStaffRole = useMemo(
     () => roles.isIssuer || roles.isServiceCenter,
@@ -157,7 +197,7 @@ function useStaffAccessState() {
 
   const hasOwnedPassports = ownedItemCodes.length > 0;
   const isLoadingAccess =
-    isResolvingAccess || isLoadingRoles || isLoadingOwnedItems;
+    isResolvingAccess || isLoadingRoles || isLoadingOwnedItems || isLoadingDemoMode;
 
   const ownerTransferHref = useMemo(() => {
     return "/transfer";
@@ -177,8 +217,11 @@ function useStaffAccessState() {
     ownedItemCodes,
     hasOwnedPassports,
     isLoadingOwnedItems,
+    publicDemoMode,
+    isLoadingDemoMode,
     ownerTransferHref,
-    primaryRoute: primaryRouteByRole[primaryRole]
+    primaryRoute: primaryRouteByRole[primaryRole],
+    refreshAccess
   };
 }
 

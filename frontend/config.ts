@@ -1,5 +1,5 @@
 const DEFAULT_CONTRACT_ADDRESS =
-  "0x91Eb73e5F534E0A7233aCa45Cec916698A8E894E";
+  "0x39c2e573B41Ef56c91AC1BDf0420FDc3CeA23b96";
 
 const DEFAULT_RPC_URL =
   "https://eth-sepolia.g.alchemy.com/v2/uNm5eqtsZtbKAO0REfsiD";

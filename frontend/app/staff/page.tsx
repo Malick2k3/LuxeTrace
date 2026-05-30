@@ -15,6 +15,7 @@ export default function StaffPortalPage() {
     isCorrectNetwork,
     isLoadingAccess,
     primaryRole,
+    publicDemoMode,
     roleSummary,
     staffActions
   } = useStaffAccess();
@@ -70,13 +71,24 @@ export default function StaffPortalPage() {
     return (
       <div className="space-y-6">
         <PageHeader
-          eyebrow="Customer"
-          title="This account is read-only"
-          description="Use the customer pages to check an item."
+          eyebrow={publicDemoMode ? "Public demo" : "Customer"}
+          title={publicDemoMode ? "Choose a demo role or stay read-only" : "This account is read-only"}
+          description={
+            publicDemoMode
+              ? "In sandbox mode, any wallet can claim a temporary Brand or Care role for testing."
+              : "Use the customer pages to check an item."
+          }
         />
-        <Button asChild>
-          <Link href="/verify">Check an item</Link>
-        </Button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button asChild>
+            <Link href="/verify">Check an item</Link>
+          </Button>
+          {publicDemoMode ? (
+            <Button asChild variant="outline">
+              <Link href="/demo">Claim a demo role</Link>
+            </Button>
+          ) : null}
+        </div>
       </div>
     );
   }

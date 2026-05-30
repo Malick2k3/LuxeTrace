@@ -214,6 +214,36 @@ export function useLuxeTrace() {
     [getWriteContract, waitForTransaction]
   );
 
+  const claimDemoIssuerRole = useCallback(async () => {
+    setError("");
+
+    try {
+      const contract = await getWriteContract();
+      const transaction = await contract.claimDemoIssuerRole();
+
+      await waitForTransaction(transaction);
+    } catch (claimError) {
+      setTransactionState("error");
+      setError(getReadableError(claimError));
+      throw claimError;
+    }
+  }, [getWriteContract, waitForTransaction]);
+
+  const claimDemoServiceCenterRole = useCallback(async () => {
+    setError("");
+
+    try {
+      const contract = await getWriteContract();
+      const transaction = await contract.claimDemoServiceCenterRole();
+
+      await waitForTransaction(transaction);
+    } catch (claimError) {
+      setTransactionState("error");
+      setError(getReadableError(claimError));
+      throw claimError;
+    }
+  }, [getWriteContract, waitForTransaction]);
+
   const getPassport = useCallback(
     async (itemCode: string) => {
       setError("");
@@ -288,6 +318,12 @@ export function useLuxeTrace() {
     [getReadContract]
   );
 
+  const getPublicDemoMode = useCallback(async () => {
+    const contract = getReadContract();
+
+    return contract.isPublicDemoMode();
+  }, [getReadContract]);
+
   const getOwnedItemCodes = useCallback(
     async (account: string) => {
       if (!account) {
@@ -316,10 +352,13 @@ export function useLuxeTrace() {
     issuePassport,
     transferOwnership,
     addServiceRecord,
+    claimDemoIssuerRole,
+    claimDemoServiceCenterRole,
     getPassport,
     getOwnershipHistory,
     getServiceHistory,
     getRoleState,
+    getPublicDemoMode,
     getOwnedItemCodes,
     resetTransactionState
   };

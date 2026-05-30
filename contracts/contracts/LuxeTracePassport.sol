@@ -49,6 +49,7 @@ contract LuxeTracePassport {
     mapping(address => bool) private admins;
     mapping(address => bool) private issuers;
     mapping(address => bool) private serviceCenters;
+    bool private publicDemoMode;
 
     event PassportIssued(
         string indexed itemCode,
@@ -105,10 +106,16 @@ contract LuxeTracePassport {
         _;
     }
 
-    constructor() {
+    modifier onlyPublicDemoMode() {
+        require(publicDemoMode, "Public demo mode is disabled");
+        _;
+    }
+
+    constructor(bool enablePublicDemoMode) {
         admins[msg.sender] = true;
         issuers[msg.sender] = true;
         serviceCenters[msg.sender] = true;
+        publicDemoMode = enablePublicDemoMode;
     }
 
     function setIssuer(address account, bool enabled) external onlyAdmin {
@@ -132,6 +139,20 @@ contract LuxeTracePassport {
 
     function isServiceCenter(address account) external view returns (bool) {
         return serviceCenters[account];
+    }
+
+    function isPublicDemoMode() external view returns (bool) {
+        return publicDemoMode;
+    }
+
+    function claimDemoIssuerRole() external onlyPublicDemoMode {
+        issuers[msg.sender] = true;
+        emit RoleUpdated("ISSUER", msg.sender, true);
+    }
+
+    function claimDemoServiceCenterRole() external onlyPublicDemoMode {
+        serviceCenters[msg.sender] = true;
+        emit RoleUpdated("SERVICE_CENTER", msg.sender, true);
     }
 
     function issuePassport(
